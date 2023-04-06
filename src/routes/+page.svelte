@@ -1,5 +1,20 @@
-<script>
-
+<script lang="ts">
+	  import { onMount } from 'svelte';
+  
+  function handleKeyDown(event: KeyboardEvent) {
+    // The event object contains information about the key that was pressed
+    console.log('Key pressed: ' + event.key);
+  }
+  
+  onMount(() => {
+    // Add the event listener to the document object when the component mounts
+    document.addEventListener('keydown', handleKeyDown);
+    
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  });
 </script>
 
 <svelte:head>
