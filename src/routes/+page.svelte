@@ -64,6 +64,7 @@ async function addFriend() {
 
 	  
   <p>{status}</p>
+
   <fieldset>
     <legend>Add new friend</legend>
     <label>
