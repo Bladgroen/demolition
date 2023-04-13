@@ -1,3 +1,3 @@
-import {writable } from 'svelte/store'
+import { writable } from "svelte/store";
 
-export const alert = writable('Welcome to the test store')
+export const alert = writable("Welcome to the test store");

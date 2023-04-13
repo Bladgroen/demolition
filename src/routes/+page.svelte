@@ -17,33 +17,28 @@
   });
 
 
-  import { db } from "../db";
+import { db } from "../db";
+//TODO cleanup 
+export let okapiStart = 0;
+export let chiroStart = 0;
+export let ksaStart = 0;
 
-export let defaultAge = 21;
+async function addTotal() {
 
-let status = "";
-
-let friendName = "";
-let friendAge = defaultAge;
-
-async function addFriend() {
-  try {
-
-    // Add the new friend!
-    const id = await db.friends.add({
-      name: friendName,
-      age: friendAge
+    const okapiField = await db.Okapi.add({
+      total: okapiStart
     });
 
-    status = `Friend ${friendName} successfully added. Got id ${id}`;
-    
-    // Reset form:
-    friendName = "";
-    friendAge = defaultAge;
-  } catch (error) {
-    status = `Failed to add ${friendName}: ${error}`;
-  }
+    const chiroField = await db.Chiro.add({
+      total: chiroStart
+    });
+
+    const ksaField = await db.Ksa.add({
+      total: ksaStart
+    });
+
 }
+
 </script>
 
 <svelte:head>
@@ -56,33 +51,23 @@ async function addFriend() {
 		<img src="/title.png" alt="demolition title" />
 	</div>
 
-	<div class="trapezes">
-	<div class="trapezium"></div>
-	<div class="trapezium"></div>
-	<div class="trapezium"></div>
+
+	<div class="podium">
+    <div class="subPodium">
+          <div class="logoContainer">
+      <img src="/Chirologo.png" alt="logo" class="logo" id="third" >
+      <img src=/Ksalogo.png alt="logo" class="logo" id="first">
+      <img src="witzonderachtergrond.png" alt="logo" class="logo" id="second">
+    </div>
+
+    <div class="podiumImage">
+      <img src="/PodiumFoto.png" alt="podium">
+    </div>
+    </div>
+
 	</div>
 
-	  
-  <p>{status}</p>
-
-  <fieldset>
-    <legend>Add new friend</legend>
-    <label>
-      Name:
-      <input
-          type="text"
-          bind:value={friendName} />
-    </label>
-    <br/>
-    <label>
-      Age:
-      <input
-        type="number"
-        bind:value={friendAge} />
-    </label>
-    <br />
-    <button on:click={addFriend}>Add Friend</button>
-  </fieldset>
+	
 	  
 </section>
 
@@ -93,18 +78,32 @@ async function addFriend() {
 	justify-content: center;
 }
 
-.trapezes {
-	display: flex;
-	
+.podium {
+  text-align: center;
 }
-.trapezium {
-      height: 0;
-      width: 150px;
-      border-bottom: 500px solid green;
-      border-left: 50px solid transparent;
-      border-right: 50px solid transparent;
-	  transform: rotate(180deg);
-    }
 
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subPodium {
+  width: 687px;
+  margin: 0 auto;
+}
+
+.logo {
+  max-width: 231px;
+  height: auto;
+}
+
+#third {
+    transform: translateY(200px);
+}
+
+#second {
+  transform: translateY(100px);
+}
 
 </style>

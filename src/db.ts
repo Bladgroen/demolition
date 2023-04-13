@@ -1,21 +1,23 @@
-import Dexie, { type Table} from 'dexie';
+import Dexie, { type Table } from "dexie";
 
-export interface Friend {
-    id?: number;
-    name: string;
-    age: number;
+export interface Club {
+  total: number;
 }
 
 export class MySubClassedDexie extends Dexie {
+  Okapi!: Table<Club>;
+  Chiro!: Table<Club>;
+  Ksa!: Table<Club>;
 
-    friends!: Table<Friend>;
-
-    constructor() {
-        super('myDatabase');
-        this.version(1).stores({
-            friends: '++id, name, age'
-        })
-    }
+  constructor() {
+    super("demolitiondb");
+    this.version(1).stores({
+      Okapi: "total",
+      Chiro: "total",
+      Ksa: "total",
+    });
+  }
 }
+
 
 export const db = new MySubClassedDexie();
