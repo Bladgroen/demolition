@@ -1,43 +1,25 @@
 <script lang="ts">
 	  import { onMount } from 'svelte';
+	  import { addPoint, initStart } from '../lib/logic';
   
   function handleKeyDown(event: KeyboardEvent) {
     // The event object contains information about the key that was pressed
-    console.log('Key pressed: ' + event.key);
+    addPoint(event)
+
   }
   
   onMount(() => {
     // Add the event listener to the document object when the component mounts
     document.addEventListener('keydown', handleKeyDown);
+    initStart();
     
     // Clean up the event listener when the component unmounts
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+
     };
   });
 
-
-import { db } from "../db";
-//TODO cleanup 
-export let okapiStart = 0;
-export let chiroStart = 0;
-export let ksaStart = 0;
-
-async function addTotal() {
-
-    const okapiField = await db.Okapi.add({
-      total: okapiStart
-    });
-
-    const chiroField = await db.Chiro.add({
-      total: chiroStart
-    });
-
-    const ksaField = await db.Ksa.add({
-      total: ksaStart
-    });
-
-}
 
 </script>
 

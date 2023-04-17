@@ -1,23 +1,20 @@
 import Dexie, { type Table } from "dexie";
 
 export interface Club {
-  total: number;
+  chiro: number;
+  ksa: number;
+  okapi: number;
 }
 
 export class MySubClassedDexie extends Dexie {
-  Okapi!: Table<Club>;
-  Chiro!: Table<Club>;
-  Ksa!: Table<Club>;
+  Clubs!: Table<Club>;
 
   constructor() {
     super("demolitiondb");
     this.version(1).stores({
-      Okapi: "total",
-      Chiro: "total",
-      Ksa: "total",
+      Clubs: "++id, chiro, ksa, okapi",
     });
   }
 }
-
 
 export const db = new MySubClassedDexie();
