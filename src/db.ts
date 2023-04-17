@@ -1,6 +1,6 @@
 import Dexie, { type Table } from "dexie";
 
-export interface Club {
+export type Club = {
   chiro: number;
   ksa: number;
   okapi: number;

@@ -1,3 +1,4 @@
+import { writable } from "svelte/store";
 import { db } from "../db";
 
 export async function initStart() {
@@ -39,5 +40,58 @@ export function addPoint(event: KeyboardEvent) {
       .modify((record) => {
         record.okapi += 1;
       });
+  }
+}
+
+export function checkScore() {
+  let place: any = writable([]);
+
+  db.Clubs.toArray()
+    .then(function (data) {
+      let test = calculateStatus(data);
+      place.set(test);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  return place;
+}
+
+function calculateStatus(data: any) {
+  const { chiro, ksa, okapi } = data[0];
+  const highest = Math.max(chiro, ksa, okapi);
+  const secondHighest = [chiro, ksa, okapi].sort((a, b) => b - a)[1];
+  const logos = ["/Chirologo.png", "/Ksalogo.png", "/witzonderachtergrond.png"];
+
+  switch (true) {
+    case chiro === highest:
+      if (ksa === secondHighest && okapi === secondHighest) {
+        return [logos[0], logos[2], logos[1]];
+      } else if (ksa === secondHighest) {
+        return [logos[0], logos[1], logos[2]];
+      } else if (okapi === secondHighest) {
+        return [logos[0], logos[2], logos[1]];
+      }
+      break;
+    case ksa === highest:
+      if (chiro === secondHighest && okapi === secondHighest) {
+        return [logos[1], logos[0], logos[2]];
+      } else if (chiro === secondHighest) {
+        return [logos[1], logos[0], logos[2]];
+      } else if (okapi === secondHighest) {
+        return [logos[1], logos[2], logos[0]];
+      }
+      break;
+    case okapi === highest:
+      if (chiro === secondHighest && ksa === secondHighest) {
+        return [logos[2], logos[0], logos[1]];
+      } else if (chiro === secondHighest) {
+        return [logos[2], logos[0], logos[1]];
+      } else if (ksa === secondHighest) {
+        return [logos[2], logos[1], logos[0]];
+      }
+      break;
+    default:
+      return logos.reverse();
   }
 }

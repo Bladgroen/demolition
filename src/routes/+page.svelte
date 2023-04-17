@@ -1,26 +1,39 @@
 <script lang="ts">
+	  import { liveQuery } from "dexie";
 	  import { onMount } from 'svelte';
-	  import { addPoint, initStart } from '../lib/logic';
+	  import { addPoint, checkScore, initStart } from '../lib/logic';
   
   function handleKeyDown(event: KeyboardEvent) {
     // The event object contains information about the key that was pressed
     addPoint(event)
-
   }
   
+  let place = '';
   onMount(() => {
     // Add the event listener to the document object when the component mounts
     document.addEventListener('keydown', handleKeyDown);
     initStart();
+      let placeStore: any = []
+    const interval = setInterval(() => {
+        placeStore = checkScore();
+        console.log("test");
+        placeStore.subscribe(data => {
+        place = data;
+        console.log(place);
+        
+    })
+    }, 15 * 60 * 1000)
+
     
     // Clean up the event listener when the component unmounts
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-
+      clearInterval(interval);
     };
   });
 
 
+  
 </script>
 
 <svelte:head>
@@ -33,13 +46,12 @@
 		<img src="/title.png" alt="demolition title" />
 	</div>
 
-
 	<div class="podium">
     <div class="subPodium">
           <div class="logoContainer">
-      <img src="/Chirologo.png" alt="logo" class="logo" id="third" >
-      <img src=/Ksalogo.png alt="logo" class="logo" id="first">
-      <img src="witzonderachtergrond.png" alt="logo" class="logo" id="second">
+      <img src="{place[2]}" alt="logo" class="logo" id="third">
+      <img src="{place[0]}" alt="logo" class="logo" id="first">
+      <img src="{place[1]}" alt="logo" class="logo" id="second">
     </div>
 
     <div class="podiumImage">
@@ -47,12 +59,8 @@
     </div>
     </div>
 
-	</div>
-
-	
-	  
+	</div>  
 </section>
-
 
 <style>
 .image {
@@ -77,6 +85,7 @@
 
 .logo {
   max-width: 231px;
+  min-width: 231px;
   height: auto;
 }
 
