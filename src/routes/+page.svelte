@@ -8,7 +8,7 @@
     addPoint(event)
   }
   
-  let place = '';
+  let place = ["/witzonderachtergrond.png", "/Ksalogo.png", "/Chirologo.png"];
   onMount(() => {
     // Add the event listener to the document object when the component mounts
     document.addEventListener('keydown', handleKeyDown);
