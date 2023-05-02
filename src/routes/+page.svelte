@@ -1,28 +1,31 @@
 <script lang="ts">
-	  import { liveQuery } from "dexie";
 	  import { onMount } from 'svelte';
+	  import Counter from '../components/Counter.svelte';
+	  import DenBokser from '../components/DenBokser.svelte';
+	  import Fallstaf from '../components/Fallstaf.svelte';
+	  import Jari from '../components/Jari.svelte';
+	  import Ljke from '../components/Ljke.svelte';
+    import Carrefour from '../components/carrefour.svelte';
 	  import { addPoint, checkScore, initStart } from '../lib/logic';
+
   
   function handleKeyDown(event: KeyboardEvent) {
     // The event object contains information about the key that was pressed
     addPoint(event)
   }
   
-  let place = ["/witzonderachtergrond.png", "/Ksalogo.png", "/Chirologo.png"];
+  const components = [Counter, DenBokser, Fallstaf, Jari, Ljke, Carrefour]
+
+  let currentComponentIndex = 0;
+
   onMount(() => {
     // Add the event listener to the document object when the component mounts
     document.addEventListener('keydown', handleKeyDown);
     initStart();
       let placeStore: any = []
-    const interval = setInterval(() => {
-        placeStore = checkScore();
-        console.log("test");
-        placeStore.subscribe(data => {
-        place = data;
-        console.log(place);
-        
-    })
-    }, 15 * 60 * 1000)
+      let interval = setInterval(() => {
+      currentComponentIndex = (currentComponentIndex + 1) % components.length;
+    }, 15 * 1000);
 
     
     // Clean up the event listener when the component unmounts
@@ -41,26 +44,8 @@
 	<meta name="description" content="Demolition app" />
 </svelte:head>
 
-<section>
-	<div class="image">
-		<img src="/title.png" alt="demolition title" />
-	</div>
 
-	<div class="podium">
-    <div class="subPodium">
-          <div class="logoContainer">
-      <img src="{place[2]}" alt="logo" class="logo" id="third">
-      <img src="{place[0]}" alt="logo" class="logo" id="first">
-      <img src="{place[1]}" alt="logo" class="logo" id="second">
-    </div>
-
-    <div class="podiumImage">
-      <img src="/PodiumFoto.png" alt="podium">
-    </div>
-    </div>
-
-	</div>  
-</section>
+<svelte:component this={components[currentComponentIndex]} />
 
 <style>
 .image {
@@ -95,6 +80,10 @@
 
 #second {
   transform: translateY(100px);
+}
+
+.nav {
+  padding: 1rem;
 }
 
 </style>

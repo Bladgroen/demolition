@@ -43,18 +43,49 @@ export function addPoint(event: KeyboardEvent) {
   }
 }
 
+export function addPointOnCountPage(key: String) {
+  if (key === "c") {
+    db.Clubs.where("id")
+      .equals(1)
+      .modify((record) => {
+        record.chiro += 1;
+      });
+  } else if (key === "k") {
+    db.Clubs.where("id")
+      .equals(1)
+      .modify((record) => {
+        record.ksa += 1;
+      });
+  } else if (key === "o") {
+    db.Clubs.where("id")
+      .equals(1)
+      .modify((record) => {
+        record.okapi += 1;
+      });
+  }
+}
+
 export function checkScore() {
   let place: any = writable([]);
 
   db.Clubs.toArray()
     .then(function (data) {
-      let test = calculateStatus(data);
-      place.set(test);
+      let dbData = calculateStatus(data);
+      place.set(dbData);
     })
     .catch(function (error) {
       console.log(error);
     });
   return place;
+}
+
+export async function returnScore() {
+  let store: any = [];
+  await db.Clubs.toArray().then((data) => {
+    let score = data;
+    store = score[0];
+  });
+  return store;
 }
 
 function calculateStatus(data: any) {
